@@ -403,7 +403,7 @@
 
     <!-- 在一起打卡 -->
     <div class="card">
-      <div class="card-title">📅 在一起的第 365 天</div>
+      <div class="card-title">📅 我们已经在一起 <span id="dayNum" style="font-family:'Dancing Script',cursive;font-size:1.5rem;color:var(--pink);">--</span> 天啦</div>
       <div class="love-days" id="loveDays"></div>
     </div>
 
@@ -487,15 +487,20 @@
       }, 400);
     }
 
-    // 打卡日历
+    // 打卡日历 —— 从 2022-12-16 开始计算
+    const meetDate = new Date('2022-12-16');
+    const now = new Date();
+    const totalDays = Math.floor((now - meetDate) / 86400000);
+    document.getElementById('dayNum').textContent = totalDays;
+
+    // 显示最近 30 天的打卡，今天高亮
     const daysContainer = document.getElementById('loveDays');
-    const totalDays = 30;
-    const today = 20;
-    for (let i = 1; i <= totalDays; i++) {
+    const showDays = 30;
+    for (let i = 1; i <= showDays; i++) {
       const cell = document.createElement('div');
-      cell.className = 'day-cell ' + (i <= today ? 'filled' : 'empty');
-      if (i === today) cell.classList.add('today');
-      cell.textContent = i;
+      cell.className = 'day-cell filled';
+      if (i === showDays) cell.classList.add('today');
+      cell.textContent = '❤';
       daysContainer.appendChild(cell);
     }
 
