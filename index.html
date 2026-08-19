@@ -3,303 +3,364 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>待办清单</title>
+  <title>七夕快乐 💕</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: "Georgia", "Songti SC", serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px 16px;
+      overflow-x: hidden;
+      color: #fff;
     }
 
-    .app {
-      width: 100%;
-      max-width: 520px;
+    /* 星空背景 */
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
       background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      border-radius: 50%;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* 飘落花瓣 */
+    .petals {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
       overflow: hidden;
     }
 
-    .app-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      padding: 28px 24px;
+    .petal {
+      position: absolute;
+      font-size: 20px;
+      animation: fall linear infinite;
+      opacity: 0.8;
     }
 
-    .app-header h1 {
-      font-size: 24px;
-      font-weight: 700;
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
     }
 
-    .app-header p {
-      font-size: 14px;
-      opacity: 0.85;
-      margin-top: 4px;
-    }
-
-    .input-row {
+    /* 主容器 */
+    .container {
+      position: relative;
+      z-index: 2;
       display: flex;
-      gap: 8px;
-      padding: 20px 24px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .input-row input {
-      flex: 1;
-      padding: 12px 14px;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 15px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .input-row input:focus { border-color: #667eea; }
-
-    .input-row button {
-      padding: 12px 22px;
-      background: #667eea;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-
-    .input-row button:hover { background: #5568d3; }
-
-    .filters {
-      display: flex;
-      gap: 8px;
-      padding: 12px 24px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .filters button {
-      padding: 6px 16px;
-      border: none;
-      background: #f0f0f0;
-      border-radius: 20px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .filters button.active {
-      background: #667eea;
-      color: #fff;
-    }
-
-    .todo-list {
-      list-style: none;
-      max-height: 420px;
-      overflow-y: auto;
-    }
-
-    .todo-item {
-      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 12px;
-      padding: 14px 24px;
-      border-bottom: 1px solid #f5f5f5;
-      transition: background 0.15s;
-    }
-
-    .todo-item:hover { background: #fafafa; }
-
-    .todo-item input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      accent-color: #667eea;
-      flex-shrink: 0;
-    }
-
-    .todo-item span {
-      flex: 1;
-      font-size: 15px;
-      color: #333;
-      word-break: break-word;
-    }
-
-    .todo-item.done span {
-      text-decoration: line-through;
-      color: #aaa;
-    }
-
-    .todo-item .del-btn {
-      background: none;
-      border: none;
-      color: #e55;
-      font-size: 18px;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.2s;
-      flex-shrink: 0;
-    }
-
-    .todo-item:hover .del-btn { opacity: 1; }
-
-    .app-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 24px;
-      font-size: 13px;
-      color: #999;
-    }
-
-    .app-footer .clear-btn {
-      background: none;
-      border: none;
-      color: #e55;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .empty {
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
       text-align: center;
-      padding: 48px 24px;
-      color: #bbb;
-      font-size: 15px;
+    }
+
+    /* 标题 */
+    .title {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: bold;
+      background: linear-gradient(135deg, #ff6b6b, #ee5a6f, #c44569, #f8a5c2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 80px rgba(238, 90, 111, 0.5);
+      animation: glow 2s ease-in-out infinite alternate;
+      margin-bottom: 10px;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 10px rgba(238, 90, 111, 0.3)); }
+      to { filter: drop-shadow(0 0 30px rgba(238, 90, 111, 0.8)); }
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 40px;
+      letter-spacing: 4px;
+    }
+
+    /* 牛郎织女诗 */
+    .poem {
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 36px 30px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      animation: fadeInUp 1.5s ease;
+    }
+
+    .poem p {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      line-height: 2.2;
+      color: #f0e6e6;
+      letter-spacing: 2px;
+    }
+
+    .poem .author {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* 爱心动画 */
+    .heart-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 40px;
+      cursor: pointer;
+    }
+
+    .heart {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      animation: heartbeat 1.2s ease-in-out infinite;
+    }
+
+    .heart svg {
+      width: 100%; height: 100%;
+      filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.6));
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.15); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.12); }
+      60% { transform: scale(1); }
+    }
+
+    .heart-tip {
+      position: absolute;
+      top: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    /* 祝福语 */
+    .wishes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      max-width: 600px;
+      margin-bottom: 30px;
+    }
+
+    .wish-tag {
+      padding: 8px 20px;
+      background: linear-gradient(135deg, rgba(238, 90, 111, 0.2), rgba(196, 69, 105, 0.2));
+      border: 1px solid rgba(238, 90, 111, 0.3);
+      border-radius: 30px;
+      font-size: 0.95rem;
+      color: #f8a5c2;
+      animation: fadeInUp 0.8s ease backwards;
+    }
+
+    .wish-tag:nth-child(1) { animation-delay: 0.2s; }
+    .wish-tag:nth-child(2) { animation-delay: 0.4s; }
+    .wish-tag:nth-child(3) { animation-delay: 0.6s; }
+    .wish-tag:nth-child(4) { animation-delay: 0.8s; }
+    .wish-tag:nth-child(5) { animation-delay: 1.0s; }
+    .wish-tag:nth-child(6) { animation-delay: 1.2s; }
+
+    /* 鹊桥 */
+    .bridge {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      opacity: 0.6;
+    }
+
+    .bridge svg {
+      width: 100%;
+      height: auto;
+    }
+
+    /* 底部 */
+    .footer {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 1px;
+    }
+
+    /* 点击爱心特效 */
+    .floating-heart {
+      position: fixed;
+      font-size: 24px;
+      pointer-events: none;
+      z-index: 100;
+      animation: floatUp 2s ease-out forwards;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 银河效果 */
+    .galaxy {
+      position: fixed;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(90deg, transparent, rgba(100, 149, 237, 0.08), rgba(138, 43, 226, 0.08), rgba(100, 149, 237, 0.08), transparent);
+      transform: translateY(-50%) rotate(-8deg);
+      filter: blur(40px);
+      z-index: 0;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="app-header">
-      <h1>📝 待办清单</h1>
-      <p id="dateLabel"></p>
+
+  <!-- 星空 -->
+  <div class="stars" id="stars"></div>
+
+  <!-- 银河 -->
+  <div class="galaxy"></div>
+
+  <!-- 飘落花瓣 -->
+  <div class="petals" id="petals"></div>
+
+  <div class="container">
+    <h1 class="title">七夕快乐 💕</h1>
+    <p class="subtitle">迢迢牵牛星 · 皎皎河汉女</p>
+
+    <!-- 跳动爱心 -->
+    <div class="heart-container" onclick="burstHearts(event)">
+      <div class="heart">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff6b6b"/>
+              <stop offset="50%" stop-color="#ee5a6f"/>
+              <stop offset="100%" stop-color="#c44569"/>
+            </linearGradient>
+          </defs>
+          <path d="M50,85 C50,85 20,60 20,38 C20,25 30,15 40,15 C45,15 48,18 50,22 C52,18 55,15 60,15 C70,15 80,25 80,38 C80,60 50,85 50,85 Z"
+                fill="url(#heartGrad)"/>
+        </svg>
+      </div>
+      <span class="heart-tip">点击爱心 ♥</span>
     </div>
 
-    <div class="input-row">
-      <input type="text" id="todoInput" placeholder="添加一个新任务..." maxlength="200">
-      <button id="addBtn">添加</button>
+    <!-- 古诗 -->
+    <div class="poem">
+      <p>迢迢牵牛星，皎皎河汉女。</p>
+      <p>纤纤擢素手，札札弄机杼。</p>
+      <p>终日不成章，泣涕零如雨。</p>
+      <p>河汉清且浅，相去复几许。</p>
+      <p>盈盈一水间，脉脉不得语。</p>
+      <p class="author">—— 《古诗十九首·迢迢牵牛星》</p>
     </div>
 
-    <div class="filters">
-      <button class="active" data-filter="all">全部</button>
-      <button data-filter="active">未完成</button>
-      <button data-filter="done">已完成</button>
+    <!-- 鹊桥 SVG -->
+    <div class="bridge">
+      <svg viewBox="0 0 500 80" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10,70 Q250,10 490,70" stroke="rgba(248,165,194,0.4)" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+        <circle cx="10" cy="70" r="4" fill="#f8a5c2" opacity="0.6"/>
+        <circle cx="490" cy="70" r="4" fill="#f8a5c2" opacity="0.6"/>
+        <text x="245" y="35" text-anchor="middle" fill="rgba(248,165,194,0.5)" font-size="14">鹊 桥</text>
+      </svg>
     </div>
 
-    <ul class="todo-list" id="todoList"></ul>
-
-    <div class="app-footer">
-      <span id="counter">共 0 项</span>
-      <button class="clear-btn" id="clearDone">清除已完成</button>
+    <!-- 祝福标签 -->
+    <div class="wishes">
+      <span class="wish-tag">🌹 愿有岁月可回首</span>
+      <span class="wish-tag">🌙 且以深情共白头</span>
+      <span class="wish-tag">✨ 金风玉露一相逢</span>
+      <span class="wish-tag">💕 便胜却人间无数</span>
+      <span class="wish-tag">🦋 柔情似水佳期如梦</span>
+      <span class="wish-tag">🏮 忍顾鹊桥归路</span>
     </div>
+
+    <p class="footer">— 愿天下有情人终成眷属 · 七夕 —</p>
   </div>
 
   <script>
-    const STORAGE_KEY = "pi-demo-todos";
-    let todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    let currentFilter = "all";
-
-    const input    = document.getElementById("todoInput");
-    const addBtn   = document.getElementById("addBtn");
-    const listEl   = document.getElementById("todoList");
-    const counter  = document.getElementById("counter");
-    const clearBtn = document.getElementById("clearDone");
-    const filterBtns = document.querySelectorAll(".filters button");
-
-    // 日期显示
-    const today = new Date();
-    document.getElementById("dateLabel").textContent =
-      today.toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" });
-
-    // ---- 核心逻辑 ----
-
-    function save() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    // 生成星空
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 120; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      starsContainer.appendChild(star);
     }
 
-    function addTodo() {
-      const text = input.value.trim();
-      if (!text) return;
-      todos.unshift({ id: Date.now(), text, done: false });
-      input.value = "";
-      save();
-      render();
+    // 生成飘落花瓣
+    const petalsContainer = document.getElementById('petals');
+    const petalEmojis = ['🌸', '🌺', '🌷', '💐', '💕', '🦋'];
+    for (let i = 0; i < 20; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+      petal.style.left = Math.random() * 100 + '%';
+      petal.style.fontSize = (Math.random() * 15 + 12) + 'px';
+      petal.style.animationDuration = (Math.random() * 6 + 6) + 's';
+      petal.style.animationDelay = Math.random() * 8 + 's';
+      petalsContainer.appendChild(petal);
     }
 
-    function toggleTodo(id) {
-      const t = todos.find(t => t.id === id);
-      if (t) { t.done = !t.done; save(); render(); }
-    }
-
-    function deleteTodo(id) {
-      todos = todos.filter(t => t.id !== id);
-      save();
-      render();
-    }
-
-    function clearDone() {
-      todos = todos.filter(t => !t.done);
-      save();
-      render();
-    }
-
-    function getFiltered() {
-      if (currentFilter === "active") return todos.filter(t => !t.done);
-      if (currentFilter === "done")   return todos.filter(t => t.done);
-      return todos;
-    }
-
-    function render() {
-      const items = getFiltered();
-      listEl.innerHTML = "";
-
-      if (items.length === 0) {
-        listEl.innerHTML = '<li class="empty">' +
-          (currentFilter === "all" ? "还没有任务，添加一个吧！" :
-           currentFilter === "active" ? "没有未完成的任务 🎉" : "还没有已完成的任务") +
-          "</li>";
-      } else {
-        items.forEach(t => {
-          const li = document.createElement("li");
-          li.className = "todo-item" + (t.done ? " done" : "");
-          li.innerHTML = `
-            <input type="checkbox" ${t.done ? "checked" : ""}>
-            <span></span>
-            <button class="del-btn" title="删除">✕</button>
-          `;
-          li.querySelector("span").textContent = t.text;
-          li.querySelector("input").addEventListener("change", () => toggleTodo(t.id));
-          li.querySelector(".del-btn").addEventListener("click", () => deleteTodo(t.id));
-          listEl.appendChild(li);
-        });
+    // 点击爱心特效
+    function burstHearts(e) {
+      const hearts = ['❤️', '💕', '💖', '💗', '💓', '💘', '🌹'];
+      for (let i = 0; i < 12; i++) {
+        const h = document.createElement('div');
+        h.className = 'floating-heart';
+        h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        h.style.left = (e.clientX + (Math.random() * 80 - 40)) + 'px';
+        h.style.top = (e.clientY + (Math.random() * 40 - 20)) + 'px';
+        h.style.fontSize = (Math.random() * 16 + 16) + 'px';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2000);
       }
-
-      const remaining = todos.filter(t => !t.done).length;
-      counter.textContent = `共 ${todos.length} 项，${remaining} 项未完成`;
     }
-
-    // ---- 事件绑定 ----
-
-    addBtn.addEventListener("click", addTodo);
-    input.addEventListener("keydown", e => { if (e.key === "Enter") addTodo(); });
-    clearBtn.addEventListener("click", clearDone);
-
-    filterBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        filterBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentFilter = btn.dataset.filter;
-        render();
-      });
-    });
-
-    // 初始渲染
-    render();
   </script>
 </body>
 </html>
