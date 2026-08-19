@@ -3,362 +3,517 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>七夕快乐 💕</title>
+  <title>To Magoni 💗</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+SC:wght@300;400;700&display=swap');
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      font-family: "Georgia", "Songti SC", serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: #fff;
+    :root {
+      --pink: #ff8fab;
+      --peach: #ffb5a7;
+      --lavender: #c8b6ff;
+      --cream: #fff1e6;
+      --deep: #6d6875;
     }
 
-    /* 星空背景 */
-    .stars {
+    body {
+      font-family: "Noto Sans SC", sans-serif;
+      background: linear-gradient(160deg, #ffd6e0 0%, #ffb5a7 30%, #c8b6ff 70%, #b8c0ff 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #4a4a6a;
+    }
+
+    /* 气泡背景 */
+    .bubbles {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       pointer-events: none;
       z-index: 0;
-    }
-
-    .star {
-      position: absolute;
-      background: #fff;
-      border-radius: 50%;
-      animation: twinkle 3s infinite ease-in-out;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
-    }
-
-    /* 飘落花瓣 */
-    .petals {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 1;
       overflow: hidden;
     }
 
-    .petal {
+    .bubble {
       position: absolute;
-      font-size: 20px;
-      animation: fall linear infinite;
-      opacity: 0.8;
+      bottom: -60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(2px);
+      animation: rise linear infinite;
     }
 
-    @keyframes fall {
-      0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.8; }
-      90% { opacity: 0.8; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.4; }
+      100% { transform: translateY(-110vh) scale(0.5); opacity: 0; }
     }
 
     /* 主容器 */
-    .container {
+    .wrap {
       position: relative;
       z-index: 2;
-      display: flex;
-      flex-direction: column;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 60px 20px 80px;
+    }
+
+    /* 顶部头像区 */
+    .avatar-box {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: dropIn 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 40px 20px;
+      font-size: 40px;
+      box-shadow: 0 8px 30px rgba(255, 143, 171, 0.4);
+      animation: bobble 3s ease-in-out infinite;
+    }
+
+    @keyframes bobble {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    .name-tag {
+      margin-top: 14px;
+      font-family: "Dancing Script", cursive;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(109, 104, 117, 0.3);
+    }
+
+    .name-tag sub {
+      font-size: 0.6rem;
+      font-family: "Noto Sans SC", sans-serif;
+      display: block;
+      letter-spacing: 3px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    /* 卡片 */
+    .card {
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 24px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px rgba(180, 130, 160, 0.15);
+      animation: slideUp 0.8s ease backwards;
+    }
+
+    .card:nth-child(2) { animation-delay: 0.15s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.45s; }
+    .card:nth-child(5) { animation-delay: 0.6s; }
+
+    .card-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--deep);
+      opacity: 0.5;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 情书 */
+    .love-letter {
+      font-size: 1.05rem;
+      line-height: 2;
+      color: #5a5a7a;
+    }
+
+    .love-letter .highlight {
+      background: linear-gradient(120deg, transparent 0%, rgba(255, 143, 171, 0.25) 0%);
+      border-radius: 4px;
+      padding: 0 4px;
+      font-weight: 700;
+      color: var(--pink);
+    }
+
+    /* 倒计时 */
+    .countdown {
+      display: flex;
+      justify-content: space-around;
       text-align: center;
     }
 
-    /* 标题 */
-    .title {
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: bold;
-      background: linear-gradient(135deg, #ff6b6b, #ee5a6f, #c44569, #f8a5c2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 0 80px rgba(238, 90, 111, 0.5);
-      animation: glow 2s ease-in-out infinite alternate;
-      margin-bottom: 10px;
+    .cd-unit {
+      flex: 1;
     }
 
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 10px rgba(238, 90, 111, 0.3)); }
-      to { filter: drop-shadow(0 0 30px rgba(238, 90, 111, 0.8)); }
+    .cd-num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      font-family: "Dancing Script", cursive;
+      color: var(--pink);
     }
 
-    .subtitle {
-      font-size: clamp(1rem, 3vw, 1.5rem);
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 40px;
-      letter-spacing: 4px;
+    .cd-label {
+      font-size: 0.7rem;
+      color: var(--deep);
+      opacity: 0.5;
+      margin-top: 2px;
     }
 
-    /* 牛郎织女诗 */
-    .poem {
-      max-width: 600px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    /* 翻牌情话 */
+    .quote-box {
+      text-align: center;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s;
+    }
+
+    .quote-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #6d6875;
+      font-weight: 300;
+    }
+
+    .quote-text::before { content: "「"; color: var(--pink); }
+    .quote-text::after { content: "」"; color: var(--pink); }
+
+    .next-btn {
+      display: block;
+      margin: 16px auto 0;
+      padding: 8px 24px;
+      border: none;
       border-radius: 20px;
-      padding: 36px 30px;
-      margin-bottom: 40px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      animation: fadeInUp 1.5s ease;
-    }
-
-    .poem p {
-      font-size: clamp(1rem, 3vw, 1.3rem);
-      line-height: 2.2;
-      color: #f0e6e6;
-      letter-spacing: 2px;
-    }
-
-    .poem .author {
-      margin-top: 16px;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    /* 爱心动画 */
-    .heart-container {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      margin-bottom: 40px;
-      cursor: pointer;
-    }
-
-    .heart {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      animation: heartbeat 1.2s ease-in-out infinite;
-    }
-
-    .heart svg {
-      width: 100%; height: 100%;
-      filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.6));
-    }
-
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      15% { transform: scale(1.15); }
-      30% { transform: scale(1); }
-      45% { transform: scale(1.12); }
-      60% { transform: scale(1); }
-    }
-
-    .heart-tip {
-      position: absolute;
-      top: 130px;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      color: #fff;
       font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.5);
-      animation: pulse 2s infinite;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(255, 143, 171, 0.35);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 0.8; }
+    .next-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 143, 171, 0.5);
     }
 
-    /* 祝福语 */
-    .wishes {
+    .next-btn:active { transform: scale(0.95); }
+
+    /* 打卡日历 */
+    .love-days {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 6px;
       justify-content: center;
-      max-width: 600px;
-      margin-bottom: 30px;
     }
 
-    .wish-tag {
-      padding: 8px 20px;
-      background: linear-gradient(135deg, rgba(238, 90, 111, 0.2), rgba(196, 69, 105, 0.2));
-      border: 1px solid rgba(238, 90, 111, 0.3);
-      border-radius: 30px;
-      font-size: 0.95rem;
-      color: #f8a5c2;
-      animation: fadeInUp 0.8s ease backwards;
+    .day-cell {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      transition: all 0.3s;
     }
 
-    .wish-tag:nth-child(1) { animation-delay: 0.2s; }
-    .wish-tag:nth-child(2) { animation-delay: 0.4s; }
-    .wish-tag:nth-child(3) { animation-delay: 0.6s; }
-    .wish-tag:nth-child(4) { animation-delay: 0.8s; }
-    .wish-tag:nth-child(5) { animation-delay: 1.0s; }
-    .wish-tag:nth-child(6) { animation-delay: 1.2s; }
+    .day-cell.filled {
+      background: linear-gradient(135deg, var(--pink), var(--peach));
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(255, 143, 171, 0.3);
+    }
 
-    /* 鹊桥 */
-    .bridge {
-      width: 100%;
-      max-width: 500px;
-      margin: 20px auto;
+    .day-cell.empty {
+      background: rgba(255, 255, 255, 0.4);
+      color: rgba(109, 104, 117, 0.3);
+    }
+
+    .day-cell.today {
+      animation: pulseCell 1.5s infinite;
+      border: 2px solid var(--lavender);
+    }
+
+    @keyframes pulseCell {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* 大爱心按钮 */
+    .big-heart {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .heart-btn {
+      display: inline-block;
+      font-size: 3rem;
+      cursor: pointer;
+      animation: beat 1s ease-in-out infinite;
+      transition: transform 0.15s;
+      user-select: none;
+    }
+
+    .heart-btn:active { transform: scale(1.3); }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    .tap-count {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--deep);
       opacity: 0.6;
     }
 
-    .bridge svg {
-      width: 100%;
-      height: auto;
+    .tap-count span {
+      font-family: "Dancing Script", cursive;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--pink);
     }
 
-    /* 底部 */
-    .footer {
+    /* 底部签名 */
+    .signature {
+      text-align: center;
       margin-top: 30px;
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.3);
-      letter-spacing: 1px;
+      font-family: "Dancing Script", cursive;
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.8);
+      text-shadow: 0 2px 8px rgba(109, 104, 117, 0.2);
     }
 
-    /* 点击爱心特效 */
-    .floating-heart {
+    .signature small {
+      display: block;
+      font-family: "Noto Sans SC", sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    /* 飘出爱心 */
+    .fly-heart {
       position: fixed;
-      font-size: 24px;
       pointer-events: none;
       z-index: 100;
-      animation: floatUp 2s ease-out forwards;
+      animation: flyUp 1.5s ease-out forwards;
     }
 
-    @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+    @keyframes flyUp {
+      0% { transform: translateY(0) scale(1) rotate(0); opacity: 1; }
+      100% { transform: translateY(-250px) scale(0.3) rotate(45deg); opacity: 0; }
     }
 
-    @keyframes fadeInUp {
+    @keyframes dropIn {
+      from { opacity: 0; transform: translateY(-40px) scale(0.8); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes slideUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 银河效果 */
-    .galaxy {
+    /* 装饰emoji */
+    .deco {
       position: fixed;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(90deg, transparent, rgba(100, 149, 237, 0.08), rgba(138, 43, 226, 0.08), rgba(100, 149, 237, 0.08), transparent);
-      transform: translateY(-50%) rotate(-8deg);
-      filter: blur(40px);
-      z-index: 0;
+      font-size: 1.5rem;
+      opacity: 0.15;
       pointer-events: none;
+      z-index: 0;
+    }
+    .deco-1 { top: 8%; left: 5%; animation: float 6s ease-in-out infinite; }
+    .deco-2 { top: 20%; right: 8%; animation: float 7s ease-in-out infinite 1s; }
+    .deco-3 { bottom: 15%; left: 7%; animation: float 5s ease-in-out infinite 0.5s; }
+    .deco-4 { bottom: 30%; right: 6%; animation: float 8s ease-in-out infinite 2s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-20px) rotate(15deg); }
     }
   </style>
 </head>
 <body>
 
-  <!-- 星空 -->
-  <div class="stars" id="stars"></div>
+  <!-- 气泡 -->
+  <div class="bubbles" id="bubbles"></div>
 
-  <!-- 银河 -->
-  <div class="galaxy"></div>
+  <!-- 装饰 -->
+  <div class="deco deco-1">🌸</div>
+  <div class="deco deco-2">✨</div>
+  <div class="deco deco-3">🦋</div>
+  <div class="deco deco-4">🌷</div>
 
-  <!-- 飘落花瓣 -->
-  <div class="petals" id="petals"></div>
+  <div class="wrap">
 
-  <div class="container">
-    <h1 class="title">七夕快乐 💕</h1>
-    <p class="subtitle">迢迢牵牛星 · 皎皎河汉女</p>
+    <!-- 头像 -->
+    <div class="avatar-box">
+      <div class="avatar">🥰</div>
+      <div class="name-tag">Magoni<sub>我的七夕小朋友</sub></div>
+    </div>
 
-    <!-- 跳动爱心 -->
-    <div class="heart-container" onclick="burstHearts(event)">
-      <div class="heart">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ff6b6b"/>
-              <stop offset="50%" stop-color="#ee5a6f"/>
-              <stop offset="100%" stop-color="#c44569"/>
-            </linearGradient>
-          </defs>
-          <path d="M50,85 C50,85 20,60 20,38 C20,25 30,15 40,15 C45,15 48,18 50,22 C52,18 55,15 60,15 C70,15 80,25 80,38 C80,60 50,85 50,85 Z"
-                fill="url(#heartGrad)"/>
-        </svg>
+    <!-- 情书 -->
+    <div class="card">
+      <div class="card-title">💌 给 Magoni 的情书</div>
+      <div class="love-letter">
+        亲爱的 <span class="highlight">Magoni</span>，<br>
+        七夕快乐呀！在这个甜甜的日子里，想告诉你：<br>
+        你是我<span class="highlight">银河里最亮的那颗星</span> 🌟<br>
+        比牛郎织女幸运的是——<br>
+        我不用等一年，<span class="highlight">每天都能见到你</span> 💕
       </div>
-      <span class="heart-tip">点击爱心 ♥</span>
     </div>
 
-    <!-- 古诗 -->
-    <div class="poem">
-      <p>迢迢牵牛星，皎皎河汉女。</p>
-      <p>纤纤擢素手，札札弄机杼。</p>
-      <p>终日不成章，泣涕零如雨。</p>
-      <p>河汉清且浅，相去复几许。</p>
-      <p>盈盈一水间，脉脉不得语。</p>
-      <p class="author">—— 《古诗十九首·迢迢牵牛星》</p>
+    <!-- 倒计时 -->
+    <div class="card">
+      <div class="card-title">⏰ 下一个七夕还有</div>
+      <div class="countdown" id="countdown">
+        <div class="cd-unit"><div class="cd-num" id="cd-d">--</div><div class="cd-label">天</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-h">--</div><div class="cd-label">时</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-m">--</div><div class="cd-label">分</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-s">--</div><div class="cd-label">秒</div></div>
+      </div>
     </div>
 
-    <!-- 鹊桥 SVG -->
-    <div class="bridge">
-      <svg viewBox="0 0 500 80" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10,70 Q250,10 490,70" stroke="rgba(248,165,194,0.4)" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
-        <circle cx="10" cy="70" r="4" fill="#f8a5c2" opacity="0.6"/>
-        <circle cx="490" cy="70" r="4" fill="#f8a5c2" opacity="0.6"/>
-        <text x="245" y="35" text-anchor="middle" fill="rgba(248,165,194,0.5)" font-size="14">鹊 桥</text>
-      </svg>
+    <!-- 每日情话 -->
+    <div class="card">
+      <div class="card-title">💬 今日情话 · 点击换一句</div>
+      <div class="quote-box" id="quoteBox">
+        <div class="quote-text" id="quoteText">遇见你之前，我没想过谈恋爱；遇见你之后，我没想过别人</div>
+      </div>
+      <button class="next-btn" onclick="nextQuote()">换一句 💗</button>
     </div>
 
-    <!-- 祝福标签 -->
-    <div class="wishes">
-      <span class="wish-tag">🌹 愿有岁月可回首</span>
-      <span class="wish-tag">🌙 且以深情共白头</span>
-      <span class="wish-tag">✨ 金风玉露一相逢</span>
-      <span class="wish-tag">💕 便胜却人间无数</span>
-      <span class="wish-tag">🦋 柔情似水佳期如梦</span>
-      <span class="wish-tag">🏮 忍顾鹊桥归路</span>
+    <!-- 在一起打卡 -->
+    <div class="card">
+      <div class="card-title">📅 在一起的第 365 天</div>
+      <div class="love-days" id="loveDays"></div>
     </div>
 
-    <p class="footer">— 愿天下有情人终成眷属 · 七夕 —</p>
+    <!-- 点爱心 -->
+    <div class="card">
+      <div class="card-title">💗 爱心收集站</div>
+      <div class="big-heart">
+        <div class="heart-btn" onclick="tapHeart(event)">❤️</div>
+        <div class="tap-count">Magoni 收到了 <span id="heartCount">0</span> 颗爱心</div>
+      </div>
+    </div>
+
+    <!-- 签名 -->
+    <div class="signature">
+      Forever & Always
+      <small>—— 你的专属七夕页面 ——</small>
+    </div>
+
   </div>
 
   <script>
-    // 生成星空
-    const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 120; i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      const size = Math.random() * 2 + 1;
-      star.style.width = size + 'px';
-      star.style.height = size + 'px';
-      star.style.left = Math.random() * 100 + '%';
-      star.style.top = Math.random() * 100 + '%';
-      star.style.animationDelay = Math.random() * 3 + 's';
-      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
-      starsContainer.appendChild(star);
+    // 气泡
+    const bc = document.getElementById('bubbles');
+    for (let i = 0; i < 25; i++) {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const s = Math.random() * 40 + 10;
+      b.style.width = s + 'px';
+      b.style.height = s + 'px';
+      b.style.left = Math.random() * 100 + '%';
+      b.style.animationDuration = (Math.random() * 8 + 8) + 's';
+      b.style.animationDelay = Math.random() * 10 + 's';
+      bc.appendChild(b);
     }
 
-    // 生成飘落花瓣
-    const petalsContainer = document.getElementById('petals');
-    const petalEmojis = ['🌸', '🌺', '🌷', '💐', '💕', '🦋'];
-    for (let i = 0; i < 20; i++) {
-      const petal = document.createElement('div');
-      petal.className = 'petal';
-      petal.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
-      petal.style.left = Math.random() * 100 + '%';
-      petal.style.fontSize = (Math.random() * 15 + 12) + 'px';
-      petal.style.animationDuration = (Math.random() * 6 + 6) + 's';
-      petal.style.animationDelay = Math.random() * 8 + 's';
-      petalsContainer.appendChild(petal);
+    // 倒计时 -> 2026 七夕 (2026年8月19日已过，算下一个 2027年8月8日)
+    // 实际：七夕是农历七月初七，2026年是8月19日，如果已过则算2027年
+    const qixi2026 = new Date('2026-08-19T00:00:00');
+    const qixi2027 = new Date('2027-08-08T00:00:00');
+    let target = new Date() < qixi2026 ? qixi2026 : qixi2027;
+
+    function updateCD() {
+      const now = new Date();
+      let diff = target - now;
+      if (diff < 0) { target = qixi2027; diff = target - now; }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor(diff % 86400000 / 3600000);
+      const m = Math.floor(diff % 3600000 / 60000);
+      const s = Math.floor(diff % 60000 / 1000);
+      document.getElementById('cd-d').textContent = d;
+      document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
+      document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
+      document.getElementById('cd-s').textContent = String(s).padStart(2, '0');
+    }
+    updateCD();
+    setInterval(updateCD, 1000);
+
+    // 情话
+    const quotes = [
+      '遇见你之前，我没想过谈恋爱；遇见你之后，我没想过别人',
+      'Magoni，你是我所有温柔的理由 🌸',
+      '想和你一起看星星，看到银河都嫉妒',
+      '你笑起来真好看，像春天的花一样 🌷',
+      '我这个人挺懒的，但喜欢你这件事我坚持了好久',
+      '你是我藏在口袋里的糖，甜到心里去了 🍬',
+      '如果我是牛郎，才不要一年见一次，天天都要见到 Magoni',
+      '世间万物皆苦，你明目张胆的偏爱就是救赎 ✨',
+      'Magoni 就是我的关键词，输入法都记住了',
+      '想把你藏起来，又想全世界都知道你是我的人 💕',
+      '你是我翻山越岭也想见一面的人',
+      '七夕不重要，有你的每一天都是情人节 🦋'
+    ];
+    let qi = 0;
+    function nextQuote() {
+      const box = document.getElementById('quoteBox');
+      box.style.opacity = '0';
+      setTimeout(() => {
+        qi = (qi + 1) % quotes.length;
+        document.getElementById('quoteText').textContent = quotes[qi];
+        box.style.opacity = '1';
+      }, 400);
     }
 
-    // 点击爱心特效
-    function burstHearts(e) {
-      const hearts = ['❤️', '💕', '💖', '💗', '💓', '💘', '🌹'];
-      for (let i = 0; i < 12; i++) {
+    // 打卡日历
+    const daysContainer = document.getElementById('loveDays');
+    const totalDays = 30;
+    const today = 20;
+    for (let i = 1; i <= totalDays; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'day-cell ' + (i <= today ? 'filled' : 'empty');
+      if (i === today) cell.classList.add('today');
+      cell.textContent = i;
+      daysContainer.appendChild(cell);
+    }
+
+    // 点爱心
+    let heartCount = 0;
+    function tapHeart(e) {
+      heartCount++;
+      document.getElementById('heartCount').textContent = heartCount;
+      const hearts = ['❤️', '💕', '💖', '💗', '💓', '💘', '🩷', '💝'];
+      for (let i = 0; i < 6; i++) {
         const h = document.createElement('div');
-        h.className = 'floating-heart';
+        h.className = 'fly-heart';
         h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-        h.style.left = (e.clientX + (Math.random() * 80 - 40)) + 'px';
-        h.style.top = (e.clientY + (Math.random() * 40 - 20)) + 'px';
-        h.style.fontSize = (Math.random() * 16 + 16) + 'px';
+        h.style.left = (e.clientX + (Math.random() * 60 - 30)) + 'px';
+        h.style.top = (e.clientY + (Math.random() * 30 - 15)) + 'px';
+        h.style.fontSize = (Math.random() * 12 + 16) + 'px';
         document.body.appendChild(h);
-        setTimeout(() => h.remove(), 2000);
+        setTimeout(() => h.remove(), 1500);
       }
     }
   </script>
