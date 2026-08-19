@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>待办清单</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    .app-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 28px 24px;
+    }
+
+    .app-header h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .app-header p {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      padding: 20px 24px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .input-row input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-row input:focus { border-color: #667eea; }
+
+    .input-row button {
+      padding: 12px 22px;
+      background: #667eea;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .input-row button:hover { background: #5568d3; }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      padding: 12px 24px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .filters button {
+      padding: 6px 16px;
+      border: none;
+      background: #f0f0f0;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filters button.active {
+      background: #667eea;
+      color: #fff;
+    }
+
+    .todo-list {
+      list-style: none;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      border-bottom: 1px solid #f5f5f5;
+      transition: background 0.15s;
+    }
+
+    .todo-item:hover { background: #fafafa; }
+
+    .todo-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #667eea;
+      flex-shrink: 0;
+    }
+
+    .todo-item span {
+      flex: 1;
+      font-size: 15px;
+      color: #333;
+      word-break: break-word;
+    }
+
+    .todo-item.done span {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+
+    .todo-item .del-btn {
+      background: none;
+      border: none;
+      color: #e55;
+      font-size: 18px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+
+    .todo-item:hover .del-btn { opacity: 1; }
+
+    .app-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      font-size: 13px;
+      color: #999;
+    }
+
+    .app-footer .clear-btn {
+      background: none;
+      border: none;
+      color: #e55;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: #bbb;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="app-header">
+      <h1>📝 待办清单</h1>
+      <p id="dateLabel"></p>
+    </div>
+
+    <div class="input-row">
+      <input type="text" id="todoInput" placeholder="添加一个新任务..." maxlength="200">
+      <button id="addBtn">添加</button>
+    </div>
+
+    <div class="filters">
+      <button class="active" data-filter="all">全部</button>
+      <button data-filter="active">未完成</button>
+      <button data-filter="done">已完成</button>
+    </div>
+
+    <ul class="todo-list" id="todoList"></ul>
+
+    <div class="app-footer">
+      <span id="counter">共 0 项</span>
+      <button class="clear-btn" id="clearDone">清除已完成</button>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "pi-demo-todos";
+    let todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    let currentFilter = "all";
+
+    const input    = document.getElementById("todoInput");
+    const addBtn   = document.getElementById("addBtn");
+    const listEl   = document.getElementById("todoList");
+    const counter  = document.getElementById("counter");
+    const clearBtn = document.getElementById("clearDone");
+    const filterBtns = document.querySelectorAll(".filters button");
+
+    // 日期显示
+    const today = new Date();
+    document.getElementById("dateLabel").textContent =
+      today.toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" });
+
+    // ---- 核心逻辑 ----
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    }
+
+    function addTodo() {
+      const text = input.value.trim();
+      if (!text) return;
+      todos.unshift({ id: Date.now(), text, done: false });
+      input.value = "";
+      save();
+      render();
+    }
+
+    function toggleTodo(id) {
+      const t = todos.find(t => t.id === id);
+      if (t) { t.done = !t.done; save(); render(); }
+    }
+
+    function deleteTodo(id) {
+      todos = todos.filter(t => t.id !== id);
+      save();
+      render();
+    }
+
+    function clearDone() {
+      todos = todos.filter(t => !t.done);
+      save();
+      render();
+    }
+
+    function getFiltered() {
+      if (currentFilter === "active") return todos.filter(t => !t.done);
+      if (currentFilter === "done")   return todos.filter(t => t.done);
+      return todos;
+    }
+
+    function render() {
+      const items = getFiltered();
+      listEl.innerHTML = "";
+
+      if (items.length === 0) {
+        listEl.innerHTML = '<li class="empty">' +
+          (currentFilter === "all" ? "还没有任务，添加一个吧！" :
+           currentFilter === "active" ? "没有未完成的任务 🎉" : "还没有已完成的任务") +
+          "</li>";
+      } else {
+        items.forEach(t => {
+          const li = document.createElement("li");
+          li.className = "todo-item" + (t.done ? " done" : "");
+          li.innerHTML = `
+            <input type="checkbox" ${t.done ? "checked" : ""}>
+            <span></span>
+            <button class="del-btn" title="删除">✕</button>
+          `;
+          li.querySelector("span").textContent = t.text;
+          li.querySelector("input").addEventListener("change", () => toggleTodo(t.id));
+          li.querySelector(".del-btn").addEventListener("click", () => deleteTodo(t.id));
+          listEl.appendChild(li);
+        });
+      }
+
+      const remaining = todos.filter(t => !t.done).length;
+      counter.textContent = `共 ${todos.length} 项，${remaining} 项未完成`;
+    }
+
+    // ---- 事件绑定 ----
+
+    addBtn.addEventListener("click", addTodo);
+    input.addEventListener("keydown", e => { if (e.key === "Enter") addTodo(); });
+    clearBtn.addEventListener("click", clearDone);
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.dataset.filter;
+        render();
+      });
+    });
+
+    // 初始渲染
+    render();
+  </script>
+</body>
+</html>
