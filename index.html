@@ -3,423 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday, 阿春 — 29</title>
+<title>阿春 29 · Happy Birthday</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  :root{
-    --bg:#0c0c14;
-    --panel:#13131f;
-    --green:#00ff9c;
-    --cyan:#22d3ee;
-    --amber:#fbbf24;
-    --pink:#f472b6;
-    --muted:#6b7280;
-    --dim:#3f3f5a;
-  }
-  html,body{height:100%}
-  body{
-    background:var(--bg);
-    color:#d4d4d8;
-    font-family:"Cascadia Code","JetBrains Mono","Fira Code","SF Mono",Consolas,"PingFang SC","Microsoft YaHei",monospace;
-    overflow:hidden;
-  }
-  /* 窗口 */
-  .win{
-    max-width:920px;
-    margin:3vh auto 0;
-    height:94vh;
-    background:var(--panel);
-    border:1px solid #23233a;
-    border-radius:14px;
-    box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.02);
-    display:flex;flex-direction:column;
-    overflow:hidden;
-  }
-  .titlebar{
-    display:flex;align-items:center;gap:10px;
-    padding:10px 16px;
-    background:linear-gradient(180deg,#1b1b2b,#15152200);
-    border-bottom:1px solid #23233a;
-    user-select:none;
-  }
-  .dot{width:12px;height:12px;border-radius:50%}
-  .dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
-  .tab{
-    margin-left:14px;font-size:.8rem;color:#9aa;
-    padding:4px 14px;border-radius:6px 6px 0 0;
-    background:#0c0c14;border-bottom:2px solid var(--cyan);
-  }
-  .titlebar .right{margin-left:auto;font-size:.72rem;color:var(--muted);letter-spacing:1px}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a12;
+  --green:#00ff9c;
+  --cyan:#22d3ee;
+  --amber:#fbbf24;
+  --pink:#f472b6;
+  --purple:#a78bfa;
+  --muted:#6b7280;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:#e4e4e7;
+  font-family:"SF Mono","Cascadia Code","JetBrains Mono",Consolas,"PingFang SC","Microsoft YaHei",monospace;
+  overflow-x:hidden;
+}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:1}
 
-  .body{flex:1;display:flex;overflow:hidden}
-  .sidebar{
-    width:200px;flex-shrink:0;
-    border-right:1px solid #23233a;
-    padding:16px 12px;font-size:.78rem;line-height:1.9;
-    overflow-y:auto;
-  }
-  .side-h{color:var(--muted);font-size:.68rem;letter-spacing:2px;margin:14px 0 6px;text-transform:uppercase}
-  .side-h:first-child{margin-top:0}
-  .side-item{color:#888;cursor:pointer;padding:2px 8px;border-radius:5px;transition:.15s}
-  .side-item:hover{background:#1c1c2e;color:#cfcfe0}
-  .side-item.active{color:var(--green);background:#0f1f18}
-  .side-item .ic{display:inline-block;width:16px;color:var(--dim)}
+/* ===== HERO ===== */
+.hero{
+  position:relative;z-index:2;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:20px;
+}
+.badge{
+  font-size:.8rem;color:var(--green);
+  border:1px solid rgba(0,255,156,.3);border-radius:20px;
+  padding:6px 18px;margin-bottom:30px;
+  background:rgba(0,255,156,.05);
+  letter-spacing:2px;
+  animation:fadeIn .8s ease both;
+}
+.hero h1{
+  font-size:clamp(2.4rem,9vw,5.5rem);
+  font-weight:700;letter-spacing:2px;line-height:1.1;
+  background:linear-gradient(135deg,var(--amber),var(--pink),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:fadeIn 1s .2s ease both;
+}
+.hero .sub{
+  font-size:clamp(1rem,3vw,1.5rem);
+  color:#aaa;margin-top:18px;letter-spacing:6px;
+  animation:fadeIn 1s .5s ease both;
+}
+.hero .age{
+  font-size:clamp(6rem,22vw,14rem);
+  font-weight:900;line-height:1;margin:10px 0;
+  color:transparent;
+  -webkit-text-stroke:2px rgba(251,191,36,.4);
+  position:relative;
+  animation:fadeIn 1s .4s ease both;
+}
+.hero .age::after{
+  content:'29';position:absolute;inset:0;
+  background:linear-gradient(180deg,var(--amber),var(--pink));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  -webkit-text-stroke:0;
+  filter:drop-shadow(0 0 30px rgba(251,191,36,.3));
+}
+.scroll-hint{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  color:var(--muted);font-size:.75rem;letter-spacing:2px;
+  animation:bounce 2s infinite;
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-  .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-  .screen{
-    flex:1;overflow-y:auto;padding:18px 22px;font-size:.86rem;line-height:1.65;
-    scrollbar-width:thin;scrollbar-color:#2a2a40 transparent;
-  }
-  .screen::-webkit-scrollbar{width:8px}
-  .screen::-webkit-scrollbar-thumb{background:#2a2a40;border-radius:4px}
+/* ===== 蛋糕区 ===== */
+.section{position:relative;z-index:2;padding:80px 20px;max-width:800px;margin:0 auto;text-align:center}
+.section h2{
+  font-size:clamp(1.3rem,4vw,2rem);font-weight:400;letter-spacing:3px;
+  margin-bottom:40px;color:#cfcfe0;
+}
+.section h2 .tag{color:var(--green);font-size:.7rem;vertical-align:super;margin-right:8px}
 
-  .line{white-space:pre-wrap;word-break:break-word}
-  .ok{color:var(--green)}
-  .cy{color:var(--cyan)}
-  .am{color:var(--amber)}
-  .pk{color:var(--pink)}
-  .mu{color:var(--muted)}
-  .dim{color:var(--dim)}
-  .bold{font-weight:700}
+.cake-stage{
+  position:relative;display:inline-block;margin:20px auto;
+  filter:drop-shadow(0 0 40px rgba(251,191,36,.2));
+}
+.cake-svg{width:clamp(220px,50vw,340px);height:auto}
 
-  .prompt-line{display:flex;align-items:baseline;gap:6px}
-  .prompt{color:var(--green);white-space:nowrap}
-  .path{color:var(--cyan)}
-  .input{
-    flex:1;background:transparent;border:none;outline:none;
-    color:#e4e4e7;font:inherit;caret-color:var(--green);
-  }
+/* ===== 统计卡片 ===== */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:16px;margin-top:20px;
+}
+.stat{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:24px 16px;
+  transition:.3s;
+}
+.stat:hover{border-color:rgba(0,255,156,.3);background:rgba(0,255,156,.03);transform:translateY(-4px)}
+.stat .num{font-size:2rem;font-weight:700;color:var(--cyan)}
+.stat .num.am{color:var(--amber)}
+.stat .num.pk{color:var(--pink)}
+.stat .num.gr{color:var(--green)}
+.stat .label{font-size:.72rem;color:var(--muted);margin-top:8px;letter-spacing:1px}
 
-  .cmdbar{
-    border-top:1px solid #23233a;padding:10px 22px;
-    display:flex;align-items:baseline;gap:8px;
-    background:#101019;
-  }
+/* ===== git log 时间线 ===== */
+.timeline{text-align:left;margin-top:20px}
+.commit{
+  display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06);
+  align-items:baseline;
+}
+.commit:last-child{border:none}
+.commit .hash{color:var(--amber);font-size:.82rem;flex-shrink:0;width:70px}
+.commit .ref{color:var(--pink);font-size:.72rem;flex-shrink:0;width:90px}
+.commit .msg{color:#999;font-size:.85rem;flex:1}
+.commit.head .msg{color:#e4e4e7;font-weight:600}
 
-  /* ASCII 蛋糕 */
-  .cake{
-    color:var(--amber);
-    text-shadow:0 0 12px rgba(251,191,36,.35);
-    font-size:.72rem;line-height:1.2;
-    white-space:pre;margin:10px 0;
-  }
-  .flame{color:var(--pink);animation:flick .5s infinite alternate}
-  @keyframes flick{from{opacity:.7}to{opacity:1;text-shadow:0 0 8px var(--pink)}}
+/* ===== 祝福 ===== */
+.wishes{text-align:left;max-width:600px;margin:20px auto}
+.wish{
+  display:flex;gap:12px;padding:12px 0;font-size:.95rem;color:#bbb;
+  opacity:0;transform:translateX(-20px);
+  transition:opacity .6s,transform .6s;
+}
+.wish.visible{opacity:1;transform:translateX(0)}
+.wish .bullet{color:var(--green);flex-shrink:0}
 
-  /* 彩带 canvas */
-  #fx{position:fixed;inset:0;pointer-events:none;z-index:50}
+/* ===== 按钮 ===== */
+.actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.btn{
+  background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.3);
+  color:var(--green);padding:12px 28px;border-radius:30px;
+  font:inherit;font-size:.85rem;letter-spacing:1px;cursor:pointer;
+  transition:.25s;
+}
+.btn:hover{background:rgba(0,255,156,.2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,255,156,.15)}
+.btn.pk{background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.3);color:var(--pink)}
+.btn.pk:hover{background:rgba(244,114,182,.2);box-shadow:0 8px 24px rgba(244,114,182,.15)}
 
-  /* 光标 */
-  .cursor{display:inline-block;width:8px;height:1.1em;background:var(--green);vertical-align:text-bottom;animation:blink 1s steps(1) infinite}
-  @keyframes blink{50%{opacity:0}}
+/* ===== footer ===== */
+.footer{
+  position:relative;z-index:2;text-align:center;padding:40px 20px 60px;
+  color:var(--muted);font-size:.75rem;letter-spacing:2px;
+}
+.footer .heart{color:var(--pink)}
 
-  .hint{position:fixed;bottom:10px;right:16px;font-size:.68rem;color:var(--dim);letter-spacing:1px;z-index:60}
-  @media(max-width:640px){
-    .sidebar{display:none}
-    .win{height:100vh;margin:0;border-radius:0}
-  }
+/* 蜡烛火焰 */
+.flame{transform-origin:center bottom;animation:flick .4s infinite alternate}
+@keyframes flick{from{transform:scaleY(1) scaleX(1)}to{transform:scaleY(1.15) scaleX(.9)}}
+
+@media(max-width:520px){
+  .commit .ref{display:none}
+  .section{padding:60px 16px}
+}
 </style>
 </head>
 <body>
 <canvas id="fx"></canvas>
-<div class="win">
-  <div class="titlebar">
-    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-    <span class="tab">achun@birthday: ~ — zsh</span>
-    <span class="right">uptime: 29 years</span>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">// birthday.exe — running</div>
+  <h1>Happy Birthday</h1>
+  <div class="sub">阿 春</div>
+  <div class="age">29</div>
+  <div class="scroll-hint">↓ 向下滚动</div>
+</section>
+
+<!-- 蛋糕 -->
+<section class="section">
+  <h2><span class="tag">$ cat</span>cake.txt</h2>
+  <div class="cake-stage">
+    <svg class="cake-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+      <!-- 蜡烛 -->
+      <g id="candles"></g>
+      <!-- 顶层 -->
+      <rect x="100" y="90" width="100" height="50" rx="4" fill="#fbbf24" opacity=".9"/>
+      <rect x="100" y="88" width="100" height="8" rx="4" fill="#f59e0b"/>
+      <!-- 中层 -->
+      <rect x="75" y="140" width="150" height="55" rx="4" fill="#f472b6" opacity=".85"/>
+      <rect x="75" y="138" width="150" height="8" rx="4" fill="#ec4899"/>
+      <!-- 底层 -->
+      <rect x="50" y="195" width="200" height="60" rx="4" fill="#22d3ee" opacity=".8"/>
+      <rect x="50" y="193" width="200" height="8" rx="4" fill="#06b6d4"/>
+      <!-- 盘子 -->
+      <ellipse cx="150" cy="260" rx="120" ry="10" fill="#1a1a2e"/>
+      <!-- 装饰圆点 -->
+      <circle cx="120" cy="165" r="4" fill="#fff" opacity=".6"/>
+      <circle cx="150" cy="170" r="4" fill="#fff" opacity=".6"/>
+      <circle cx="180" cy="165" r="4" fill="#fff" opacity=".6"/>
+      <circle cx="90" cy="222" r="4" fill="#fff" opacity=".5"/>
+      <circle cx="130" cy="225" r="4" fill="#fff" opacity=".5"/>
+      <circle cx="170" cy="225" r="4" fill="#fff" opacity=".5"/>
+      <circle cx="210" cy="222" r="4" fill="#fff" opacity=".5"/>
+    </svg>
   </div>
-  <div class="body">
-    <aside class="sidebar">
-      <div class="side-h">EXPLORER</div>
-      <div class="side-item active"><span class="ic">▸</span> birthday.sh</div>
-      <div class="side-item" data-cmd="cat cake.txt"><span class="ic">▸</span> cake.txt</div>
-      <div class="side-item" data-cmd="git log"><span class="ic">▸</span> commit_history</div>
-      <div class="side-item" data-cmd="cat wishes.md"><span class="ic">▸</span> wishes.md</div>
-      <div class="side-item" data-cmd="neofetch"><span class="ic">▸</span> neofetch</div>
-      <div class="side-h">SHORTCUTS</div>
-      <div class="side-item" data-cmd="help"><span class="ic">▸</span> help</div>
-      <div class="side-item" data-cmd="celebrate"><span class="ic">▸</span> celebrate</div>
-      <div class="side-item" data-cmd="sudo make coffee"><span class="ic">▸</span> coffee</div>
-      <div class="side-item" data-cmd="clear"><span class="ic">▸</span> clear</div>
-    </aside>
-    <div class="main">
-      <div class="screen" id="screen"></div>
-      <div class="cmdbar">
-        <span class="prompt">achun@birthday</span><span class="mu">:</span><span class="path">~</span><span class="mu">$</span>
-        <input class="input" id="cmd" autofocus autocomplete="off" spellcheck="false">
-      </div>
-    </div>
+  <p style="color:var(--muted);font-size:.85rem;margin-top:10px">纯 SVG 烘焙 · 0 卡路里 · 29 根蜡烛</p>
+  <div class="actions">
+    <button class="btn" onclick="blowCandles()">💨 吹蜡烛</button>
+    <button class="btn pk" onclick="bigBurst()">🎉 撒花</button>
   </div>
+</section>
+
+<!-- 统计 -->
+<section class="section">
+  <h2><span class="tag">$ neofetch</span>life_stats</h2>
+  <div class="stats">
+    <div class="stat"><div class="num gr">29</div><div class="label">岁 / years</div></div>
+    <div class="stat"><div class="num am">10,585</div><div class="label">天 alive</div></div>
+    <div class="stat"><div class="num">253,920</div><div class="label">小时 uptime</div></div>
+    <div class="stat"><div class="num pk">∞</div><div class="label">bug 待修</div></div>
+    <div class="stat"><div class="num am">☕</div><div class="label">咖啡因驱动</div></div>
+    <div class="stat"><div class="num gr">0</div><div class="label">次 reboot</div></div>
+  </div>
+</section>
+
+<!-- git log -->
+<section class="section">
+  <h2><span class="tag">$ git log</span>--oneline</h2>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- 祝福 -->
+<section class="section">
+  <h2><span class="tag">$ cat</span>wishes.md</h2>
+  <div class="wishes" id="wishes"></div>
+</section>
+
+<div class="footer">
+  <span class="heart">●</span> 给阿春 · 29 岁 · 愿每个 PR 都秒 merge <span class="heart">●</span>
 </div>
-<div class="hint">输入 help 查看命令 · Enter 执行</div>
 
 <script>
-const screen=document.getElementById('screen');
-const input=document.getElementById('cmd');
-const fx=document.getElementById('fx');
-const ctx=fx.getContext('2d');
-
+/* ===== 彩带 ===== */
+const fx=document.getElementById('fx'),ctx=fx.getContext('2d');
 function resize(){fx.width=innerWidth;fx.height=innerHeight}
 resize();addEventListener('resize',resize);
-
-/* ---------- 彩带特效 ---------- */
-let confetti=[];
-function burst(n=120){
-  const colors=['#00ff9c','#22d3ee','#fbbf24','#f472b6','#a78bfa','#fff'];
+let P=[];
+const COLORS=['#00ff9c','#22d3ee','#fbbf24','#f472b6','#a78bfa','#fff'];
+function burst(n=100,fromX){
+  const x=fromX??innerWidth/2;
   for(let i=0;i<n;i++){
-    confetti.push({
-      x:innerWidth/2+(Math.random()-.5)*200,
-      y:innerHeight/2,
-      vx:(Math.random()-.5)*16,
-      vy:Math.random()*-18-4,
-      g:0.4+Math.random()*.2,
-      w:6+Math.random()*6,h:8+Math.random()*8,
-      c:colors[i%colors.length],
-      rot:Math.random()*Math.PI*2,vr:(Math.random()-.5)*.3,
-      life:1
+    P.push({
+      x:x+(Math.random()-.5)*100,y:innerHeight/2,
+      vx:(Math.random()-.5)*14,vy:Math.random()*-16-3,
+      g:.35+Math.random()*.15,w:5+Math.random()*6,h:8+Math.random()*8,
+      c:COLORS[i%COLORS.length],rot:Math.random()*6.28,vr:(Math.random()-.5)*.3,life:1
     });
   }
 }
-function tickFx(){
+function bigBurst(){burst(200);setTimeout(()=>burst(150,innerWidth*.3),200);setTimeout(()=>burst(150,innerWidth*.7),400)}
+function loop(){
   ctx.clearRect(0,0,fx.width,fx.height);
-  confetti=confetti.filter(p=>p.life>0);
-  confetti.forEach(p=>{
-    p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.life-=0.006;
+  P=P.filter(p=>p.life>0);
+  P.forEach(p=>{
+    p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.life-=.005;
     ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
     ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.c;
     ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
   });
-  requestAnimationFrame(tickFx);
+  requestAnimationFrame(loop);
 }
-tickFx();
+loop();
+/* 开屏自动撒花 */
+setTimeout(()=>burst(120),600);
 
-/* ---------- 终端输出 ---------- */
-function print(html,cls=''){
+/* ===== 蜡烛 ===== */
+const candlesG=document.getElementById('candles');
+let candlesLit=true;
+const positions=[110,130,150,170,190,100,120,140,160,180,200];
+// 29 根太挤，放 9 根代表
+[110,125,140,155,170,185,200,97,213].forEach((x,i)=>{
+  const y=90;
+  // 蜡烛杆
+  const stick=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  stick.setAttribute('x',x-2);stick.setAttribute('y',y-28);stick.setAttribute('width',4);stick.setAttribute('height',28);
+  stick.setAttribute('rx',2);stick.setAttribute('fill',i%2?'#f472b6':'#22d3ee');
+  candlesG.appendChild(stick);
+  // 火焰
+  const flame=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+  flame.setAttribute('cx',x);flame.setAttribute('cy',y-32);flame.setAttribute('rx',4);flame.setAttribute('ry',8);
+  flame.setAttribute('fill','#fbbf24');flame.classList.add('flame');
+  flame.dataset.idx=i;
+  candlesG.appendChild(flame);
+  // 火焰光晕
+  const glow=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  glow.setAttribute('cx',x);glow.setAttribute('cy',y-32);glow.setAttribute('r',10);
+  glow.setAttribute('fill','#fbbf24');glow.setAttribute('opacity','.2');
+  glow.classList.add('flame');glow.dataset.idx=i;
+  candlesG.appendChild(glow);
+});
+function blowCandles(){
+  if(!candlesLit)return;
+  candlesLit=false;
+  document.querySelectorAll('#candles .flame').forEach(f=>f.style.display='none');
+  burst(180);
+  const note=document.createElement('div');
+  note.textContent='愿望已上传到宇宙服务器 · SLA 99.999%';
+  note.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99;font-size:clamp(1rem,4vw,1.6rem);color:#fbbf24;text-shadow:0 0 20px rgba(251,191,36,.5);letter-spacing:2px;animation:fadeIn .5s ease;pointer-events:none';
+  document.body.appendChild(note);
+  setTimeout(()=>note.remove(),3000);
+}
+
+/* ===== git log 时间线 ===== */
+const commits=[
+  ['29a0f1c','HEAD → main','29 岁：重构人生架构，性能优化 +∞%',true],
+  ['28be3d9','origin/main','28 岁：修复深夜熬夜 bug，引入咖啡依赖'],
+  ['27cc1a0','','27 岁：新增「成熟稳重」模块（试验性）'],
+  ['26fa022','','26 岁：删除多余焦虑，释放内存'],
+  ['25de188','','25 岁：合并 quarter-life 分支'],
+  ['1a00000','','出生：init commit，万物之始'],
+];
+const tl=document.getElementById('timeline');
+commits.forEach(c=>{
   const d=document.createElement('div');
-  d.className='line '+(cls||'');
-  d.innerHTML=html;
-  screen.appendChild(d);
-  screen.scrollTop=screen.scrollHeight;
-  return d;
-}
-
-async function type(text,cls='',speed=18){
-  const d=print('',cls);
-  for(let i=0;i<text.length;i++){
-    d.innerHTML=text.slice(0,i+1);
-    screen.scrollTop=screen.scrollHeight;
-    await sleep(speed);
-  }
-  return d;
-}
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-
-/* ---------- 命令 ---------- */
-const CAKE=String.raw`
-            ${'()'}
-           (~~)
-        ${'()'}(____)${'()'}
-       (__________)
-      (____________)
-     (______________)
-    (________________)
-        |  ||  |
-        |__||__|
-`;
-
-const commands={
-  help(){
-    print('<span class="cy">可用命令：</span>');
-    print('  <span class="ok">celebrate</span>    <span class="mu">— 启动生日庆祝程序</span>');
-    print('  <span class="ok">cat cake.txt</span> <span class="mu">— 查看蛋糕</span>');
-    print('  <span class="ok">git log</span>      <span class="mu">— 查看 29 年提交记录</span>');
-    print('  <span class="ok">cat wishes.md</span><span class="mu">— 查看祝福</span>');
-    print('  <span class="ok">neofetch</span>     <span class="mu">— 系统信息</span>');
-    print('  <span class="ok">sudo make coffee</span> <span class="mu">— 来杯咖啡</span>');
-    print('  <span class="ok">clear</span>        <span class="mu">— 清屏</span>');
-    print('  <span class="ok">help</span>         <span class="mu">— 显示本帮助</span>');
-  },
-
-  async celebrate(){
-    print('<span class="cy">$</span> ./birthday.sh --target=achun --age=29');
-    await sleep(300);
-    await type('正在编译生日祝福...', 'mu', 20);
-    await sleep(400);
-    print('<span class="ok">✓ 编译成功 (0 errors, 29 warnings)</span>');
-    await sleep(300);
-    print('');
-    print('  <span class="bold am">╔══════════════════════════════════╗</span>');
-    print('  <span class="bold am">║   Happy Birthday, 阿春 — 29!     ║</span>');
-    print('  <span class="bold am">╚══════════════════════════════════╝</span>');
-    print('');
-    await type('正在点燃蜡烛...', 'mu', 18);
-    await sleep(500);
-    print('<span class="pk">  🕯 🕯 🕯 🕯 🕯 🕯 🕯 🕯 🕯</span>');
-    await sleep(400);
-    print('<span class="cy">29 根蜡烛已就位。许个愿吧，然后吹蜡烛（输入任意键继续）。</span>');
-    burst(160);
-    celebrated=true;
-  },
-
-  'cat cake.txt'(){
-    print('<span class="cy">$</span> cat cake.txt');
-    print(`<div class="cake">${CAKE}<span class="flame">  ✨ ✨ ✨</span></div>`);
-    print('<span class="mu">  29 层，纯手工 CSS 烘焙，0 卡路里。</span>');
-  },
-
-  'git log'(){
-    print('<span class="cy">$</span> git log --oneline --all');
-    const commits=[
-      ['29a0f1c','HEAD -> main','29 岁：重构人生架构，性能优化 +∞%'],
-      ['28be3d9','origin/main','28 岁：修复深夜熬夜 bug，引入咖啡依赖'],
-      ['27cc1a0','','27 岁：新增「成熟稳重」模块（试验性）'],
-      ['26fa022','','26 岁：删除多余焦虑，释放内存'],
-      ['25de188','','25 岁：合并 quarter-life 分支'],
-      ['......','',''],
-      ['01init','','出生：init commit，万物之始'],
-    ];
-    commits.forEach(c=>{
-      const hash=`<span class="am">${c[0]}</span>`;
-      const ref=c[1]?` <span class="pk">(${c[1]})</span>`:'';
-      const msg=c[2]?` <span class="mu">${c[2]}</span>`:'';
-      print(`  ${hash}${ref}${msg}`);
-    });
-    print('');
-    print('<span class="cy">29 年，${29*365} 次提交，0 次 revert。干得漂亮。</span>'.replace('${29*365}',29*365));
-  },
-
-  'cat wishes.md'(){
-    print('<span class="cy">$</span> cat wishes.md');
-    print('');
-    print('  <span class="ok"># 给阿春的 29 岁备忘录</span>');
-    print('');
-    print('  - bug 少一点，头发多一点');
-    print('  - 代码能跑就别动，但该重构就重构');
-    print('  - deadline 都是建议，身体是硬性指标');
-    print('  - 29 岁，技术栈继续升级，别忘记升级生活');
-    print('  - 少和编译器吵架，多和朋友吃饭');
-    print('  - 愿你的每个 PR 都秒 merge，每次部署都零 rollback');
-    print('');
-    print('  <span class="mu">— 来自一个懂你的终端</span>');
-  },
-
-  neofetch(){
-    print('<span class="cy">$</span> neofetch');
-    const logo=[
-      '       /\\\\\\\\\\       ',
-      '      /  \\\\\\\\\\      ',
-      '     /    \\\\\\\\\\     ',
-      '    /  29  \\\\\\\\\\    ',
-      '   /________\\\\\\\\\\   ',
-      '   \\        /     ',
-      '    \\      /      ',
-      '     \\____/       ',
-    ];
-    const info=[
-      '<span class="ok">achun</span>@<span class="cy">birthday</span>',
-      '─────────────────',
-      '<span class="ok">OS</span>:      LifeOS 29.0',
-      '<span class="ok">Host</span>:    Human Model S',
-      '<span class="ok">Kernel</span>:  Coffee 4.19',
-      '<span class="ok">Uptime</span>:  29 years',
-      '<span class="ok">Shell</span>:   zsh 5.9 (caffeinated)',
-      '<span class="ok">DE</span>:     Caffeine 2.0',
-      '<span class="ok">CPU</span>:    Brain i9 @ 2.9GHz',
-      '<span class="ok">Memory</span>:  72981MiB / ∞',
-      '<span class="ok">Theme</span>:  Dark Mode (always)',
-      '<span class="ok">Status</span>:  <span class="pk">● Birthday Mode</span>',
-    ];
-    const max=Math.max(logo.length,info.length);
-    for(let i=0;i<max;i++){
-      const l=(logo[i]||'                     ').padEnd(22);
-      const r=info[i]||'';
-      print(`<span class="cy">${l}</span>${r}`);
-    }
-  },
-
-  'sudo make coffee'(){
-    print('<span class="cy">$</span> sudo make coffee');
-    print('<span class="am">[sudo]</span> password for achun: ********');
-    print('<span class="ok">☕ 正在冲泡...</span>');
-    setTimeout(()=>{
-      print('<span class="ok">✓ 咖啡就绪。29 岁的咖啡，比 28 岁多一份从容。</span>');
-      print('<span class="mu">  (本次操作未实际消耗咖啡豆，环保。)</span>');
-    },1200);
-  },
-
-  clear(){screen.innerHTML='';},
-
-  async 404(cmd){
-    print(`<span class="cy">$</span> ${escape(cmd)}`);
-    print(`<span class="pk">zsh: command not found: ${escape(cmd)}</span>`);
-    print('<span class="mu">  试试输入 help？</span>');
-  }
-};
-
-function escape(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
-
-let busy=false,celebrated=false;
-async function run(raw){
-  const cmd=raw.trim();
-  if(!cmd||busy)return;
-  busy=true;
-  input.value='';
-  // 回显
-  print(`<span class="ok">achun@birthday</span><span class="mu">:</span><span class="cy">~</span><span class="mu">$</span> ${escape(cmd)}`);
-  const fn=commands[cmd];
-  if(fn){await fn();}
-  else if(cmd==='ls'){print('<span class="mu">birthday.sh  cake.txt  wishes.md  coffee.log</span>');}
-  else if(cmd==='whoami'){print('<span class="ok">achun</span> <span class="mu">— 一个 29 岁的技术男，今天最大。</span>');}
-  else if(cmd==='echo $AGE'){print('29');}
-  else if(cmd==='date'){print(new Date().toLocaleString('zh-CN'));}
-  else{await commands[404](cmd);}
-  busy=false;
-  input.focus();
-}
-
-input.addEventListener('keydown',e=>{
-  if(e.key==='Enter')run(input.value);
-  if(e.key==='l'&&e.ctrlKey){e.preventDefault();commands.clear();}
+  d.className='commit'+(c[3]?' head':'');
+  d.innerHTML=`<span class="hash">${c[0]}</span><span class="ref">${c[1]||''}</span><span class="msg">${c[2]}</span>`;
+  tl.appendChild(d);
 });
 
-/* 点击侧边栏 */
-document.querySelectorAll('.side-item[data-cmd]').forEach(el=>{
-  el.addEventListener('click',()=>{run(el.dataset.cmd);});
+/* ===== 祝福逐条出现 ===== */
+const wishText=[
+  'bug 少一点，头发多一点',
+  '代码能跑就别动，但该重构就重构',
+  'deadline 都是建议，身体是硬性指标',
+  '29 岁，技术栈继续升级，别忘记升级生活',
+  '少和编译器吵架，多和朋友吃饭',
+  '愿你的每个 PR 都秒 merge，每次部署都零 rollback',
+];
+const wl=document.getElementById('wishes');
+wishText.forEach(t=>{
+  const d=document.createElement('div');
+  d.className='wish';
+  d.innerHTML=`<span class="bullet">▸</span><span>${t}</span>`;
+  wl.appendChild(d);
 });
 
-/* 吹蜡烛彩蛋 */
-addEventListener('keydown',e=>{
-  if(celebrated&&!busy&&e.key!=='Enter'){
-    celebrated=false;
-    print('<span class="pk">💨 蜡烛吹灭啦！愿望已上传到宇宙服务器，SLA 99.999%。</span>');
-    burst(200);
-  }
-});
+/* 滚动出现 */
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+},{threshold:.2});
+document.querySelectorAll('.wish').forEach(w=>io.observe(w));
 
-/* ---------- 开机动画 ---------- */
-async function boot(){
-  const lines=[
-    ['BIOS v2.9.0 — Human Life System','mu'],
-    ['Detecting CPU... Brain i9 @ 2.9GHz','dim'],
-    ['Detecting Memory... 72981 MiB OK','dim'],
-    ['Loading kernel Coffee-4.19...','dim'],
-    ['Mounting /life/year29... <span class="ok">OK</span>','mu'],
-    ['Starting birthday.service... <span class="ok">[  OK  ]</span>','mu'],
-    ['','mu'],
-  ];
-  for(const [t,c] of lines){print(t,c);await sleep(280);}
-  await type('achun@birthday:~$ ./birthday.sh', 'cy', 22);
-  await sleep(500);
-  print('');
-  await type('嘿，阿春。', 'ok', 40);
-  await sleep(300);
-  await type('这是一个终端，也是一个生日蛋糕。', '', 24);
-  await sleep(200);
-  await type('29 岁了，输入 celebrate 开始庆祝，或者 help 看看能干嘛。', 'mu', 20);
-  print('');
-  input.focus();
-}
-boot();
+/* 滚动到蛋糕区自动小撒花 */
+const cakeSec=document.querySelector('.section');
+const io2=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting)burst(60)});
+},{threshold:.5});
+io2.observe(cakeSec);
 </script>
 </body>
 </html>
